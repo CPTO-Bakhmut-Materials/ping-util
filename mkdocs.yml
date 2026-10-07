@@ -3,8 +3,7 @@ site_name: Пишемо ping на Python
 repo_url: https://cpto-bakhmut-materials.github.io/ping-util
 edit_uri: edit/main/
 
-# docs/ містить символьні посилання на папки уроків у корені репозиторію,
-# тож уроки лишаються на своїх місцях, а netlab.sh і команди з README працюють як раніше.
+# docs/ містить символьні посилання на папки уроків у корені репозиторію
 docs_dir: docs
 exclude_docs: |
   __pycache__/

@@ -9,7 +9,7 @@
 - Побачити на практиці, наскільки легше розширювати код після рефакторингу з [уроку 7](../07-refactoring/README.md).
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 3 -t 1 10.1.0.99'
+$ ../netlab/netlab.sh 'python3 ping.py -c 3 -t 1 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 From 10.0.0.2 icmp_seq=1 Time to live exceeded
 From 10.0.0.2 icmp_seq=2 Time to live exceeded
@@ -368,8 +368,16 @@ def format_error(error: IcmpError) -> str:
 
 Щоб побачити Time Exceeded чи Destination Unreachable, потрібен маршрутизатор, який
 їх надішле. У справжній мережі результат залежить від провайдера, і багато
-маршрутизаторів ICMP взагалі фільтрують. Тому курс має скрипт [`netlab.sh`](../netlab.sh),
-який будує віртуальну мережу **без root**:
+маршрутизаторів ICMP взагалі фільтрують. Тому курс має скрипт [`netlab.sh`](../netlab/netlab.sh),
+який будує віртуальну мережу **без root**. Він складається з трьох файлів у папці [`netlab/`](../netlab/):
+
+| Файл | Що робить |
+|---|---|
+| [`netlab.sh`](../netlab/netlab.sh) | точка входу: створює простори імен клієнта й запускає в них `client.sh` |
+| [`client.sh`](../netlab/client.sh) | налаштовує клієнта, запускає маршрутизатор, з'єднує їх і виконує вашу команду |
+| [`router.sh`](../netlab/router.sh) | налаштовує маршрутизатор: адреси, dummy-мережу, пересилання пакетів |
+
+Схема мережі:
 
 ```
   [клієнт]                          [маршрутизатор]
@@ -399,8 +407,8 @@ def format_error(error: IcmpError) -> str:
 | `ip_forward` | дозволяє пересилати пакети між інтерфейсами, тобто бути маршрутизатором | [ip-sysctl](https://docs.kernel.org/networking/ip-sysctl.html) |
 
 ```console
-$ ./netlab.sh 'python3 08-errors-and-options/ping.py -c 1 10.0.0.2'   # одна команда
-$ ./netlab.sh                                                            # інтерактивна оболонка
+$ ./netlab/netlab.sh 'python3 08-errors-and-options/ping.py -c 1 10.0.0.2'   # одна команда
+$ ./netlab/netlab.sh                                                         # інтерактивна оболонка
 ```
 
 ---
@@ -412,7 +420,7 @@ $ ./netlab.sh                                                            # ін�
 **Time to live exceeded:**
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 3 -t 1 10.1.0.99; echo; ping -c 3 -t 1 10.1.0.99'
+$ ../netlab/netlab.sh 'python3 ping.py -c 3 -t 1 10.1.0.99; echo; ping -c 3 -t 1 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 From 10.0.0.2 icmp_seq=1 Time to live exceeded
 From 10.0.0.2 icmp_seq=2 Time to live exceeded
@@ -433,7 +441,7 @@ From 10.0.0.2 icmp_seq=3 Time to live exceeded
 **Destination Net Unreachable** (від маршрутизатора) і **Host Unreachable** (від власного хоста):
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 2 10.9.9.9'
+$ ../netlab/netlab.sh 'python3 ping.py -c 2 10.9.9.9'
 PING 10.9.9.9 (10.9.9.9) 56(84) bytes of data.
 From 10.0.0.2 icmp_seq=1 Destination Net Unreachable
 From 10.0.0.2 icmp_seq=2 Destination Net Unreachable
@@ -441,7 +449,7 @@ From 10.0.0.2 icmp_seq=2 Destination Net Unreachable
 --- 10.9.9.9 ping statistics ---
 2 packets transmitted, 0 received, +2 errors, 100% packet loss, time 1001ms
 
-$ ../netlab.sh 'python3 ping.py -c 1 -W 4 10.0.0.77'
+$ ../netlab/netlab.sh 'python3 ping.py -c 1 -W 4 10.0.0.77'
 PING 10.0.0.77 (10.0.0.77) 56(84) bytes of data.
 From 10.0.0.1 icmp_seq=1 Destination Host Unreachable
 
@@ -455,18 +463,18 @@ From 10.0.0.1 icmp_seq=1 Destination Host Unreachable
 **`-t` достатній:** з TTL = 2 пакет проходить маршрутизатор:
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 1 -t 2 10.1.0.1 | sed -n 2p'
+$ ../netlab/netlab.sh 'python3 ping.py -c 1 -t 2 10.1.0.1 | sed -n 2p'
 64 bytes from 10.1.0.1: icmp_seq=1 ttl=64 time=0.117 ms
 ```
 
 **`-s`:**
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 1 -s 1000 10.0.0.2 | head -2'
+$ ../netlab/netlab.sh 'python3 ping.py -c 1 -s 1000 10.0.0.2 | head -2'
 PING 10.0.0.2 (10.0.0.2) 1000(1028) bytes of data.
 1008 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.107 ms
 
-$ ../netlab.sh 'python3 ping.py -c 1 -s 0 10.0.0.2 | head -2'
+$ ../netlab/netlab.sh 'python3 ping.py -c 1 -s 0 10.0.0.2 | head -2'
 PING 10.0.0.2 (10.0.0.2) 0(28) bytes of data.
 8 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.114 ms
 ```
@@ -474,7 +482,7 @@ PING 10.0.0.2 (10.0.0.2) 0(28) bytes of data.
 **`-W`:**
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 1 -W 0.3 10.1.0.99 | tail -1'
+$ ../netlab/netlab.sh 'python3 ping.py -c 1 -W 0.3 10.1.0.99 | tail -1'
 1 packets transmitted, 0 received, 100% packet loss, time 301ms
 ```
 
@@ -561,7 +569,7 @@ Success: no issues found in 14 source files
 - [`ping.py`](ping.py)
 - [`pyping/packet.py`](pyping/packet.py), [`pyping/socket_io.py`](pyping/socket_io.py), [`pyping/pinger.py`](pyping/pinger.py), [`pyping/stats.py`](pyping/stats.py), [`pyping/cli.py`](pyping/cli.py)
 - [`tests/`](tests/)
-- [`../netlab.sh`](../netlab.sh)
+- [`../netlab/`](../netlab/): [`netlab.sh`](../netlab/netlab.sh), [`client.sh`](../netlab/client.sh), [`router.sh`](../netlab/router.sh)
 
 ## Використані функції та модулі
 
@@ -580,7 +588,7 @@ Success: no issues found in 14 source files
 
 1. **traceroute.** Напишіть `pyping/traceroute.py`: для TTL = 1, 2, 3 … відправляйте запит з `set_ttl(ttl)` і друкуйте адресу, з якої прийшов Time Exceeded, доки не прийде Echo Reply. Які модулі довелося змінити? (Правильна відповідь: жоден, лише новий модуль і, можливо, `cli.py`.) Перевірте в тестовій мережі: `10.1.0.1` має бути на відстані 1 кроку.
 2. Перевірте, що `ping -s 2000 10.0.0.2` працює, хоча MTU інтерфейсу 1500. Що робить ядро з таким пакетом? (Підказка: фрагментація, [RFC 791](https://www.rfc-editor.org/rfc/rfc791#section-2.3).)
-3. Додайте опцію `-M do` (заборонити фрагментацію, [`ip(7)`](https://man7.org/linux/man-pages/man7/ip.7.html), `IP_MTU_DISCOVER`) і отримайте `Frag needed and DF set (mtu = …)`. Для цього в `netlab.sh` треба зменшити MTU між маршрутизатором і другою мережею.
+3. Додайте опцію `-M do` (заборонити фрагментацію, [`ip(7)`](https://man7.org/linux/man-pages/man7/ip.7.html), `IP_MTU_DISCOVER`) і отримайте `Frag needed and DF set (mtu = …)`. Для цього в [`netlab/router.sh`](../netlab/router.sh) треба зменшити MTU між маршрутизатором і другою мережею.
 4. Додайте підтримку IPv6: ICMPv6 ([RFC 4443](https://www.rfc-editor.org/rfc/rfc4443)), `AF_INET6`. Чим відрізняються типи повідомлень? Хто рахує контрольну суму ([RFC 4443, розд. 2.3](https://www.rfc-editor.org/rfc/rfc4443#section-2.3))?
 5. Пінгуйте кілька вузлів одночасно за допомогою [`selectors`](https://docs.python.org/3/library/selectors.html) або [`asyncio`](https://docs.python.org/3/library/asyncio.html). Які модулі можна використати без змін?
 

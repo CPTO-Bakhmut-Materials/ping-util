@@ -9,7 +9,7 @@
 - Коректно зупинятися за Ctrl+C: надрукувати підсумок і повернути правильний код завершення.
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 3 10.0.0.2'
+$ ../netlab/netlab.sh 'python3 ping.py -c 3 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.134 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.218 ms
@@ -189,7 +189,7 @@ def positive_float(text: str) -> float:
 ## Запуск
 
 ```console
-$ ../netlab.sh 'time python3 ping.py -c 3 10.0.0.2'
+$ ../netlab/netlab.sh 'time python3 ping.py -c 3 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.134 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.218 ms
@@ -204,7 +204,7 @@ real    0m2.082s
 **Ctrl+C.** Утиліта [`timeout`](https://man7.org/linux/man-pages/man1/timeout.1.html) надсилає SIGINT через 2.5 с, як ніби користувач натиснув Ctrl+C:
 
 ```console
-$ ../netlab.sh 'timeout -s INT 2.5 python3 ping.py 10.0.0.2'
+$ ../netlab/netlab.sh 'timeout -s INT 2.5 python3 ping.py 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.115 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.168 ms
@@ -217,7 +217,7 @@ PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 **Немає відповідей:**
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 2 10.1.0.99; echo "exit code: $?"'
+$ ../netlab/netlab.sh 'python3 ping.py -c 2 10.1.0.99; echo "exit code: $?"'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 no answer yet for icmp_seq=1
 no answer yet for icmp_seq=2

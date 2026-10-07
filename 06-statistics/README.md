@@ -9,7 +9,7 @@
 - Рахувати статистику, не зберігаючи всі значення RTT.
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 3 10.0.0.2'
+$ ../netlab/netlab.sh 'python3 ping.py -c 3 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.096 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.185 ms
@@ -201,7 +201,7 @@ class Statistics:
 Наша програма і системний ping у тій самій тестовій мережі:
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 3 10.0.0.2 | tail -3; ping -c 3 10.0.0.2 | tail -3'
+$ ../netlab/netlab.sh 'python3 ping.py -c 3 10.0.0.2 | tail -3; ping -c 3 10.0.0.2 | tail -3'
 
 --- 10.0.0.2 ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2001ms
@@ -218,7 +218,7 @@ rtt min/avg/max/mdev = 0.044/0.076/0.107/0.025 ms
 **Ctrl+C посеред роботи:**
 
 ```console
-$ ../netlab.sh 'timeout -s INT 3.5 python3 ping.py 10.0.0.2'
+$ ../netlab/netlab.sh 'timeout -s INT 3.5 python3 ping.py 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.103 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.171 ms
@@ -233,7 +233,7 @@ rtt min/avg/max/mdev = 0.103/0.138/0.171/0.029 ms
 **Без відповідей** (рядка `rtt` немає):
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 3 10.1.0.99 | tail -2'
+$ ../netlab/netlab.sh 'python3 ping.py -c 3 10.1.0.99 | tail -2'
 --- 10.1.0.99 ping statistics ---
 3 packets transmitted, 0 received, 100% packet loss, time 3004ms
 ```

@@ -19,7 +19,7 @@
 | ОС | Linux | Поведінка ICMP-сокетів залежить від ОС. Курс перевірено на Linux ([`icmp(7)`](https://man7.org/linux/man-pages/man7/icmp.7.html), [`raw(7)`](https://man7.org/linux/man-pages/man7/raw.7.html)). |
 | Python | 3.10 або новіший | Анотації виду `list[str] \| None` ([PEP 604](https://peps.python.org/pep-0604/)), [f-рядки](https://docs.python.org/3/reference/lexical_analysis.html#f-strings), [`bytes.hex(sep)`](https://docs.python.org/3/library/stdtypes.html#bytes.hex), а в уроці 7 — [`dataclasses`](https://docs.python.org/3/library/dataclasses.html). |
 | mypy | будь-яка свіжа | Перевірка анотацій типів. Встановлюється у віртуальне середовище `.venv` ([урок 1](01-cli-skeleton/README.md#перевіряємо-типи-за-допомогою-mypy)). |
-| Права | `sudo` з уроку 3 **або** [`netlab.sh`](netlab.sh) | Raw-сокет може відкрити лише root або процес із правом `CAP_NET_RAW` ([`capabilities(7)`](https://man7.org/linux/man-pages/man7/capabilities.7.html)). Тестова мережа `netlab.sh` дає змогу обійтися без root. |
+| Права | `sudo` з уроку 3 **або** [`netlab.sh`](netlab/netlab.sh) | Raw-сокет може відкрити лише root або процес із правом `CAP_NET_RAW` ([`capabilities(7)`](https://man7.org/linux/man-pages/man7/capabilities.7.html)). Тестова мережа `netlab.sh` дає змогу обійтися без root. |
 | `iproute2`, `util-linux` | будь-які | Команди `ip`, `unshare`, `nsenter` для `netlab.sh`. Зазвичай уже встановлені. |
 
 ### Який сокет ми використовуємо
@@ -59,11 +59,11 @@
 
 Уроки 3–8 потребують raw-сокета, тобто root. Щоб не запускати навчальний код через
 `sudo` і щоб відтворити ситуації, які в справжній мережі трапляються випадково
-(тайм-аут, TTL exceeded, недоступна мережа), курс має скрипт [`netlab.sh`](netlab.sh).
+(тайм-аут, TTL exceeded, недоступна мережа), курс має скрипт [`netlab.sh`](netlab/netlab.sh).
 Він створює ізольовану віртуальну мережу з маршрутизатором **без прав root**:
 
 ```console
-$ ./netlab.sh 'python3 08-errors-and-options/ping.py -c 1 -t 1 10.1.0.99'
+$ ./netlab/netlab.sh 'python3 08-errors-and-options/ping.py -c 1 -t 1 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 From 10.0.0.2 icmp_seq=1 Time to live exceeded
 ...
@@ -84,7 +84,7 @@ python3 ping.py example.com
 # з уроку 3 потрібні права root…
 sudo python3 ping.py example.com
 # …або тестова мережа без root
-../netlab.sh 'python3 ping.py 10.0.0.2'
+../netlab/netlab.sh 'python3 ping.py 10.0.0.2'
 
 # тести (з уроку 2; в уроках 7–8 знаходять папку tests/ автоматично)
 python3 -m unittest -v

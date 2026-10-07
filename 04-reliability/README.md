@@ -14,7 +14,7 @@
 | traceback замість повідомлення | обробка `PermissionError` і `OSError`, коди завершення 0/1/2 |
 
 ```console
-$ ../netlab.sh 'python3 ping.py 10.1.0.99'
+$ ../netlab/netlab.sh 'python3 ping.py 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 no answer yet for icmp_seq=1
 
@@ -203,15 +203,15 @@ def receive_reply(
 
 ## Запуск
 
-Усі приклади запущено в тестовій мережі [`netlab.sh`](../netlab.sh) (root не потрібен).
+Усі приклади запущено в тестовій мережі [`netlab.sh`](../netlab/netlab.sh) (root не потрібен).
 
 ```console
-$ ../netlab.sh 'python3 ping.py 10.0.0.2; echo "exit code: $?"'
+$ ../netlab/netlab.sh 'python3 ping.py 10.0.0.2; echo "exit code: $?"'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.166 ms
 exit code: 0
 
-$ ../netlab.sh 'python3 ping.py 10.1.0.99; echo "exit code: $?"'
+$ ../netlab/netlab.sh 'python3 ping.py 10.1.0.99; echo "exit code: $?"'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 no answer yet for icmp_seq=1
 exit code: 1
@@ -220,7 +220,7 @@ exit code: 1
 **Чужий трафік більше не заважає.** Повторимо експеримент з уроку 3:
 
 ```console
-$ ../netlab.sh 'ping -q -c 40 -i 0.05 10.0.0.2 >/dev/null & sleep 0.2; python3 ping.py 10.1.0.99'
+$ ../netlab/netlab.sh 'ping -q -c 40 -i 0.05 10.0.0.2 >/dev/null & sleep 0.2; python3 ping.py 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 no answer yet for icmp_seq=1
 ```

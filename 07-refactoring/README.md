@@ -376,7 +376,7 @@ Success: no issues found in 14 source files
 Поведінка **не змінилася**:
 
 ```console
-$ ../netlab.sh 'python3 ping.py -c 2 10.0.0.2'
+$ ../netlab/netlab.sh 'python3 ping.py -c 2 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.134 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.132 ms
@@ -385,13 +385,13 @@ PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 2 packets transmitted, 2 received, 0% packet loss, time 1000ms
 rtt min/avg/max/mdev = 0.132/0.133/0.134/0.001 ms
 
-$ ../netlab.sh 'python3 -m pyping -c 1 10.0.0.2'     # те саме через -m
+$ ../netlab/netlab.sh 'python3 -m pyping -c 1 10.0.0.2'     # те саме через -m
 ```
 
 **Новий режим `-v`.** Паралельно працює системний ping, а наш пінгує «мовчазну» адресу:
 
 ```console
-$ ../netlab.sh 'ping -q -c 30 -i 0.05 10.0.0.2 >/dev/null & sleep 0.2; python3 ping.py -c 1 -v 10.1.0.99'
+$ ../netlab/netlab.sh 'ping -q -c 30 -i 0.05 10.0.0.2 >/dev/null & sleep 0.2; python3 ping.py -c 1 -v 10.1.0.99'
 DEBUG pyping.pinger: sent echo request id=61122 seq=1 to 10.1.0.99
 DEBUG pyping.pinger: ignored packet from 10.0.0.2: type=0 code=0 id=61120 seq=8
 DEBUG pyping.pinger: ignored packet from 10.0.0.2: type=0 code=0 id=61120 seq=9

@@ -60,7 +60,7 @@ Raw-сокет дає змогу відправити довільний пак�
 | Спосіб | Команда | Коментар |
 |---|---|---|
 | `sudo` | `sudo python3 ping.py example.com` | найпростіший спосіб, працює зі справжньою мережею |
-| тестова мережа курсу | `../netlab.sh 'python3 ping.py 10.0.0.2'` | **root не потрібен**. Скрипт створює ізольовану віртуальну мережу ([`netlab.sh`](../netlab.sh), докладніше в [уроці 8](../08-errors-and-options/README.md#тестова-мережа-netlabsh)). |
+| тестова мережа курсу | `../netlab/netlab.sh 'python3 ping.py 10.0.0.2'` | **root не потрібен**. Скрипт створює ізольовану віртуальну мережу ([`netlab.sh`](../netlab/netlab.sh), докладніше в [уроці 8](../08-errors-and-options/README.md#тестова-мережа-netlabsh)). |
 
 > Системний `ping` працює без `sudo`, бо використовує ICMP-сокет типу `SOCK_DGRAM`
 > ([`icmp(7)`](https://man7.org/linux/man-pages/man7/icmp.7.html)) або має право
@@ -283,11 +283,11 @@ Echo Reply, а, наприклад, наш власний Echo Request на loop
 ### У тестовій мережі (без root)
 
 ```console
-$ ../netlab.sh 'python3 ping.py 10.0.0.2'
+$ ../netlab/netlab.sh 'python3 ping.py 10.0.0.2'
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=0.068 ms
 
-$ ../netlab.sh 'python3 ping.py localhost'
+$ ../netlab/netlab.sh 'python3 ping.py localhost'
 PING localhost (127.0.0.1) 56(84) bytes of data.
 64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.055 ms
 ```
@@ -295,7 +295,7 @@ PING localhost (127.0.0.1) 56(84) bytes of data.
 Порівняйте з системним ping у тій самій мережі:
 
 ```console
-$ ../netlab.sh 'ping -c 1 127.0.0.1'
+$ ../netlab/netlab.sh 'ping -c 1 127.0.0.1'
 PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
 64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.036 ms
 ```
@@ -338,7 +338,7 @@ PermissionError: [Errno 1] Operation not permitted
 не прийде пакет. Адреса `10.1.0.99` у тестовій мережі не відповідає ніколи:
 
 ```console
-$ ../netlab.sh 'python3 ping.py 10.1.0.99'
+$ ../netlab/netlab.sh 'python3 ping.py 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
                                   ← програма «зависла», допоможе лише Ctrl+C
 ```
@@ -347,7 +347,7 @@ PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 паралельно системний ping до іншого вузла, а нашою програмою пінгуємо «мовчазну» адресу:
 
 ```console
-$ ../netlab.sh 'ping -q -c 40 -i 0.05 10.0.0.2 >/dev/null & sleep 0.2; python3 ping.py 10.1.0.99'
+$ ../netlab/netlab.sh 'ping -q -c 40 -i 0.05 10.0.0.2 >/dev/null & sleep 0.2; python3 ping.py 10.1.0.99'
 PING 10.1.0.99 (10.1.0.99) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=8 ttl=64 time=44.5 ms
 ```
