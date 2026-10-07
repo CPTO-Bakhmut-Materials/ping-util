@@ -1,6 +1,6 @@
 site_name: Пишемо ping на Python
 # Змініть на адресу свого репозиторію: від неї залежать посилання на файли коду.
-repo_url: https://github.com/USERNAME/lesson-ping
+repo_url: https://cpto-bakhmut-materials.github.io/ping-util
 edit_uri: edit/main/
 
 # docs/ містить символьні посилання на папки уроків у корені репозиторію,
