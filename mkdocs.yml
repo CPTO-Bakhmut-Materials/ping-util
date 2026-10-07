@@ -1,0 +1,58 @@
+site_name: Пишемо ping на Python
+# Змініть на адресу свого репозиторію: від неї залежать посилання на файли коду.
+repo_url: https://github.com/USERNAME/lesson-ping
+edit_uri: edit/main/
+
+# docs/ містить символьні посилання на папки уроків у корені репозиторію,
+# тож уроки лишаються на своїх місцях, а netlab.sh і команди з README працюють як раніше.
+docs_dir: docs
+exclude_docs: |
+  __pycache__/
+  *.pyc
+
+hooks:
+  - hooks/source_links.py
+
+theme:
+  name: material
+  language: uk
+  features:
+    - navigation.footer
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Темна тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Світла тема
+
+nav:
+  - Вступ: README.md
+  - 1. Знайомство з ping і скелет програми: 01-cli-skeleton/README.md
+  - 2. Пакет ICMP Echo Request: 02-icmp-packet/README.md
+  - 3. Перший справжній ping: 03-first-ping/README.md
+  - 4. Надійність: 04-reliability/README.md
+  - 5. Цикл: 05-loop/README.md
+  - 6. Статистика: 06-statistics/README.md
+  - 7. Рефакторинг: 07-refactoring/README.md
+  - 8. ICMP-помилки та опції: 08-errors-and-options/README.md
+
+markdown_extensions:
+  - tables
+  - admonition
+  - toc:
+      permalink: true
+      # Якорі як на GitHub: кирилиця зберігається (#тестова-мережа-netlabsh).
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
